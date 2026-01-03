@@ -6,6 +6,7 @@ import { ServicesSection } from "@/components/home/ServicesSection";
 import { WhyChooseUs } from "@/components/home/WhyChooseUs";
 import { CTASection } from "@/components/home/CTASection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import HomeGallery from "@/components/home/HomeGallery";
 
 const Index = () => {
   return (
@@ -14,6 +15,7 @@ const Index = () => {
       <main className="flex-1">
         <HeroSlider />
         <AboutSection />
+        <HomeGallery />
         <ServicesSection />
         <WhyChooseUs />
         <TestimonialsSection />

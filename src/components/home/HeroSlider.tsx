@@ -49,13 +49,9 @@ export function HeroSlider() {
   };
 
   return (
-    <section className="relative h-[500px] md:h-[600px] overflow-hidden bg-primary">
+    <section className="relative h-screen sm:h-[500px] md:h-[600px] overflow-hidden bg-primary">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-50">
-        <div className="absolute inset-0 bg-[url('/images/main-banner.jpg')] bg-cover bg-center bg-no-repeat" />
-      </div>
-
-
+      <div className="absolute inset-0 opacity-50 bg-[url('/images/main-banner-m.jpg')] md:bg-[url('/images/main-banner.jpg')] bg-cover bg-center bg-no-repeat" />
       {/* Slides */}
       <div className="relative h-full">
         {slides.map((slide, index) => {

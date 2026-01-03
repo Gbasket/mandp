@@ -1,15 +1,66 @@
+import { useState } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { Package, Truck, Users, Home } from "lucide-react";
+import { Package, Truck, Users, Home, LayoutGrid } from "lucide-react";
 
 const galleryCategories = [
-  { icon: Package, title: "Packing", count: 6 },
-  { icon: Truck, title: "Transportation", count: 6 },
-  { icon: Users, title: "Our Team", count: 4 },
-  { icon: Home, title: "Relocation", count: 6 },
+  { icon: LayoutGrid, title: "All" },
+  { icon: Package, title: "Packing" },
+  { icon: Truck, title: "Transportation"},
+  { icon: Users, title: "Our Team" },
+  { icon: Home, title: "Relocation" },
 ];
 
+const galleryImages = [
+  {
+    src: "/images/gallery/g1.jpeg",
+    category: "Packing"
+  },
+  {
+    src: "/images/gallery/g2.jpeg",
+    category: "Packing"
+  },
+  {
+    src: "/images/gallery/g3.jpeg",
+    category: "Transportation"
+  },
+  {
+    src: "/images/gallery/g4.jpeg",
+    category: "Transportation"
+  },
+  {
+    src: "/images/gallery/g5.jpeg",
+    category: "Transportation"
+  }
+  ,
+  {
+    src: "/images/gallery/g6.jpeg",
+    category: "Relocation"
+  }
+  ,
+  {
+    src: "/images/gallery/g7.jpeg",
+    category: "Relocation"
+  }
+] 
 const Gallery = () => {
+  const [activeCategory, setActiveCategory] = useState("All");
+    const filteredImages =
+    activeCategory === "All"
+      ? galleryImages
+      : galleryImages.filter(
+          img => img.category === activeCategory
+        );
+  const getCategoryCount = (category) => {
+    if (category === "All") {
+      return galleryImages.length;
+    }
+    return galleryImages.filter(
+      img => img.category === category
+    ).length;
+  };
+
+        
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -24,16 +75,25 @@ const Gallery = () => {
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             {/* Categories */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div className="flex flex-wrap justify-center gap-6 mb-12">
               {galleryCategories.map((cat, index) => {
                 const Icon = cat.icon;
                 return (
-                  <div key={index} className="bg-card rounded-xl p-6 card-shadow text-center">
-                    <div className="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                      <Icon className="w-7 h-7 text-secondary" />
-                    </div>
+                  <div 
+                  key={index}
+                  onClick={() => setActiveCategory(cat.title)}
+                  className={`bg-card rounded-xl p-6 card-shadow text-center cursor-pointer
+                  ${activeCategory === cat.title ? "ring-2 ring-secondary" : ""}`}
+                  >
+                    {cat.icon && (
+                      <div className="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <cat.icon className="w-7 h-7 text-secondary" />
+                      </div>
+                    )}
                     <h3 className="font-semibold text-foreground">{cat.title}</h3>
-                    <p className="text-sm text-muted-foreground">{cat.count} Photos</p>
+                      <p className="text-sm text-muted-foreground">
+                        {getCategoryCount(cat.title)} Photos
+                      </p>
                   </div>
                 );
               })}
@@ -41,15 +101,20 @@ const Gallery = () => {
 
             {/* Gallery Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {[...Array(12)].map((_, index) => (
+              {filteredImages.map((img, index) => (
                 <div
                   key={index}
                   className="aspect-square bg-muted rounded-xl overflow-hidden group relative cursor-pointer"
                 >
+                  <img 
+                    src={img.src}
+                    alt={img.category}
+                    className="w-full h-full object-cover" 
+                  />
                   <div className="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="text-center text-primary-foreground">
                       <Package className="w-8 h-8 mx-auto mb-2" />
-                      <p className="text-sm font-medium">View Image</p>
+                      <p className="text-sm font-medium">{img.category}</p>
                     </div>
                   </div>
                   <div className="w-full h-full flex items-center justify-center">

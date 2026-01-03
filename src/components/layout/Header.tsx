@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, ChevronDown, Phone, Mail, MapPin } from "lucide-react";
+import { useScrollHeader } from "@/hooks/useScrollHeader";
 
 const services = [
   { name: "Intercity Packers & Movers", href: "/services/intercity" },
@@ -31,13 +32,14 @@ const aboutItems = [
 ];
 
 export function Header() {
+  const scrolled = useScrollHeader(80);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   return (
-    <header className="w-full">
-      {/* Top Bar */}
-      <div className="bg-primary text-primary-foreground py-2 px-4 xs-hidden hidden md:block">
+    <>
+    {/* Top Bar */}      
+    <div className="bg-primary text-primary-foreground py-2 px-4 xs-hidden hidden md:block">
         <div className="container mx-auto flex flex-wrap justify-end items-center text-sm gap-2">
             <a href="tel:07983118393" className="flex items-center gap-1 hover:text-secondary transition-colors">
               <Phone className="w-4 h-4" />
@@ -52,20 +54,29 @@ export function Header() {
             <span>Delhi NCR, India</span>
           </div>
         </div>
-      </div>
-
+    </div>
+    <header className={`w-full sticky top-0 z-50 transition-all duration-300
+      ${scrolled ? "shadow-md bg-white" : "bg-transparent"}`}>
       {/* Main Navigation */}
-      <nav className="bg-background shadow-md sticky top-0 z-50">
+      <nav className="bg-background shadow-md">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between py-4">
+          <div className={`flex items-center justify-between transition-all duration-300  ${scrolled ? "py-2" : "py-4"}`}>
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <img 
+            <Link to="/" className="flex items-center gap-3">
+              <div className={`bg-secondary rounded-full flex items-center justify-center transition-all duration-300
+  ${scrolled ? "w-10 h-10" : "w-12 h-12"}`}>
+                <img 
                 src="/images/logo.png"
                 alt="Natraaj World Logo" 
                 className="w-full h-full object-cover" 
               />
-              {/* baaki text part same */}
+              </div>
+              <div className="sm:block">
+                <h1 className="text-xl font-bold text-primary font-heading leading-tight">
+                  Natraaj World
+                </h1>
+                <p className="text-xs text-muted-foreground">Packers & Movers</p>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -231,5 +242,6 @@ export function Header() {
         </div>
       </nav>
     </header>
+    </>
   );
 }
